@@ -34,11 +34,22 @@ def test_search_items_unwraps_data(monkeypatch):
     def handler(request):
         assert request.url.path == "/api/users/0/items"
         assert request.url.params["q"] == "doe"
+        assert request.url.params["start"] == "0"
         return httpx.Response(200, json=[ITEM])
 
     monkeypatch.setattr(server, "client", make_client(handler))
     results = server.search_items("doe")
     assert results == [ITEM["data"]]
+
+
+def test_search_items_pagination(monkeypatch):
+    def handler(request):
+        assert request.url.params["limit"] == "10"
+        assert request.url.params["start"] == "20"
+        return httpx.Response(200, json=[])
+
+    monkeypatch.setattr(server, "client", make_client(handler))
+    server.search_items("doe", limit=10, start=20)
 
 
 def test_get_item_with_bib(monkeypatch):
@@ -59,6 +70,7 @@ def test_get_item_with_bib(monkeypatch):
 def test_list_tags(monkeypatch):
     def handler(request):
         assert request.url.path == "/api/users/0/tags"
+        assert request.url.params["start"] == "0"
         return httpx.Response(200, json=[{"tag": "history"}, {"tag": "physics"}])
 
     monkeypatch.setattr(server, "client", make_client(handler))

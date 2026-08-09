@@ -18,6 +18,7 @@ def search_items(
     item_type: str | None = None,
     tag: str | None = None,
     limit: int = 25,
+    start: int = 0,
 ) -> list[dict]:
     """Search the library by title/creator/year or full text.
 
@@ -27,8 +28,9 @@ def search_items(
         item_type: Optional item type filter (e.g. "book", "journalArticle").
         tag: Optional tag filter.
         limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` items.
     """
-    params = {"q": query, "qmode": qmode, "limit": limit}
+    params = {"q": query, "qmode": qmode, "limit": limit, "start": start}
     if item_type:
         params["itemType"] = item_type
     if tag:
@@ -63,20 +65,27 @@ def get_item_children(item_key: str) -> list[dict]:
 
 
 @mcp.tool()
-def list_collections(top_level_only: bool = False) -> list[dict]:
+def list_collections(
+    top_level_only: bool = False, limit: int = 100, start: int = 0
+) -> list[dict]:
     """List collections in the library.
 
     Args:
         top_level_only: If true, only return top-level collections (no subcollections).
+        limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` collections.
     """
     path = "/collections/top" if top_level_only else "/collections"
-    collections = client.get_json(path)
+    collections = client.get_json(path, {"limit": limit, "start": start})
     return [collection["data"] for collection in collections]
 
 
 @mcp.tool()
 def get_collection_items(
-    collection_key: str, top_level_only: bool = False, limit: int = 25
+    collection_key: str,
+    top_level_only: bool = False,
+    limit: int = 25,
+    start: int = 0,
 ) -> list[dict]:
     """List items in a collection.
 
@@ -84,23 +93,26 @@ def get_collection_items(
         collection_key: The collection's Zotero key.
         top_level_only: If true, exclude child items (e.g. notes/attachments).
         limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` items.
     """
     suffix = "/top" if top_level_only else ""
     items = client.get_json(
-        f"/collections/{collection_key}/items{suffix}", {"limit": limit}
+        f"/collections/{collection_key}/items{suffix}",
+        {"limit": limit, "start": start},
     )
     return [item["data"] for item in items]
 
 
 @mcp.tool()
-def list_tags(filter: str | None = None, limit: int = 100) -> list[str]:
+def list_tags(filter: str | None = None, limit: int = 100, start: int = 0) -> list[str]:
     """List tags used in the library.
 
     Args:
         filter: Optional substring to filter tag names by.
         limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` tags.
     """
-    params = {"limit": limit}
+    params = {"limit": limit, "start": start}
     if filter:
         params["q"] = filter
     tags = client.get_json("/tags", params)
@@ -132,21 +144,29 @@ def get_bibliography(
 
 
 @mcp.tool()
-def list_saved_searches() -> list[dict]:
-    """List saved searches defined in the library."""
-    searches = client.get_json("/searches")
+def list_saved_searches(limit: int = 100, start: int = 0) -> list[dict]:
+    """List saved searches defined in the library.
+
+    Args:
+        limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` searches.
+    """
+    searches = client.get_json("/searches", {"limit": limit, "start": start})
     return [search["data"] for search in searches]
 
 
 @mcp.tool()
-def execute_saved_search(search_key: str, limit: int = 25) -> list[dict]:
+def execute_saved_search(search_key: str, limit: int = 25, start: int = 0) -> list[dict]:
     """Run a saved search and return the matching items.
 
     Args:
         search_key: The saved search's Zotero key.
         limit: Maximum number of results (1-100).
+        start: Offset into the results, for paging past the first `limit` items.
     """
-    items = client.get_json(f"/searches/{search_key}/items", {"limit": limit})
+    items = client.get_json(
+        f"/searches/{search_key}/items", {"limit": limit, "start": start}
+    )
     return [item["data"] for item in items]
 
 
