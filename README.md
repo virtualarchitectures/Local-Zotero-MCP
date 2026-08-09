@@ -15,8 +15,8 @@ machine and no API keys are required.
 
 ## Quickstart
 
-No cloning or installing required — `uvx` fetches and runs the server
-straight from GitHub. Add this to your Claude Desktop config
+No cloning or installing required — `uvx` fetches the published package
+from PyPI and runs it. Add this to your Claude Desktop config
 (`claude_desktop_config.json`):
 
 ```json
@@ -24,11 +24,7 @@ straight from GitHub. Add this to your Claude Desktop config
   "mcpServers": {
     "zotero": {
       "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/virtualarchitectures/Local-Zotero-MCP",
-        "zotero-mcp"
-      ]
+      "args": ["--from", "local-zotero-mcp", "zotero-mcp"]
     }
   }
 }
