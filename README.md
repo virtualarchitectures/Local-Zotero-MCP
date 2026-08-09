@@ -9,43 +9,34 @@ machine and no API keys are required.
 ## Requirements
 
 - Zotero desktop app, running, with
-  **Settings → Advanced → "Allow other applications on this computer to
+  **Settings > Advanced > "Allow other applications on this computer to
   communicate with Zotero"** enabled.
-- Python 3.10+
+- [uv](https://docs.astral.sh/uv/) installed.
 
-## Install
+## Quickstart
 
-```bash
-uv sync
-```
-
-or
-
-```bash
-pip install -e .
-```
-
-## Run
-
-```bash
-uv run zotero-mcp
-```
-
-This starts the server on stdio, for use with an MCP client such as Claude
-Desktop or Claude Code.
-
-### Claude Desktop config
+No cloning or installing required — `uvx` fetches and runs the server
+straight from GitHub. Add this to your Claude Desktop config
+(`claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "zotero": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/Local-Zotero-MCP", "zotero-mcp"]
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/virtualarchitectures/Local-Zotero-MCP",
+        "zotero-mcp"
+      ]
     }
   }
 }
 ```
+
+Restart Claude Desktop and the Zotero tools should be available.
+`uvx` caches the environment after the first run, so subsequent launches are
+fast; add `--refresh` to `args` if you want to force-pull the latest version.
 
 ## Tools
 
@@ -65,14 +56,41 @@ Desktop or Claude Code.
 This server is read-only: it does not create, edit, or delete anything in
 your library.
 
-## Development
+## Local development
+
+Clone the repo and install it locally:
+
+```bash
+uv sync
+```
+
+Run it directly from the checkout:
+
+```bash
+uv run zotero-mcp
+```
+
+Point Claude Desktop at your local checkout instead of GitHub with:
+
+```json
+{
+  "mcpServers": {
+    "zotero": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/Local-Zotero-MCP", "zotero-mcp"]
+    }
+  }
+}
+```
+
+Run the tests:
 
 ```bash
 uv run pytest
 ```
 
 Tests mock the Zotero HTTP responses, so a running Zotero instance isn't
-required. To smoke-test against your real library:
+required. To smoke-test against your own Zotero library:
 
 ```bash
 uv run mcp dev zotero_mcp/server.py
