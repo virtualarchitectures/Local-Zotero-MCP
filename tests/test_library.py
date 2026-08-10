@@ -50,6 +50,102 @@ def test_list_tags(monkeypatch, make_client):
     assert library.list_tags() == ["history", "physics"]
 
 
+def test_search_items_group_library(monkeypatch, make_client):
+    def handler(request):
+        assert request.url.path == "/api/groups/999/items"
+        return httpx.Response(200, json=[])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    library.search_items("doe", library="999")
+
+
+def test_list_groups(monkeypatch, make_client):
+    def handler(request):
+        assert request.url.path == "/api/users/0/groups"
+        return httpx.Response(
+            200, json=[{"data": {"id": 999, "name": "Reading Group"}}]
+        )
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.list_groups() == [{"id": 999, "name": "Reading Group"}]
+
+
+def test_list_top_level_items(monkeypatch, make_client, sample_item):
+    def handler(request):
+        assert request.url.path == "/api/users/0/items/top"
+        return httpx.Response(200, json=[sample_item])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.list_top_level_items() == [sample_item["data"]]
+
+
+def test_list_trashed_items(monkeypatch, make_client, sample_item):
+    def handler(request):
+        assert request.url.path == "/api/users/0/items/trash"
+        return httpx.Response(200, json=[sample_item])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.list_trashed_items() == [sample_item["data"]]
+
+
+def test_list_publications(monkeypatch, make_client, sample_item):
+    def handler(request):
+        assert request.url.path == "/api/users/0/publications/items"
+        return httpx.Response(200, json=[sample_item])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.list_publications() == [sample_item["data"]]
+
+
+def test_get_collection(monkeypatch, make_client):
+    collection = {"key": "COLL123", "data": {"key": "COLL123", "name": "History"}}
+
+    def handler(request):
+        assert request.url.path == "/api/users/0/collections/COLL123"
+        return httpx.Response(200, json=collection)
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.get_collection("COLL123") == collection["data"]
+
+
+def test_get_subcollections(monkeypatch, make_client):
+    collection = {"key": "SUB123", "data": {"key": "SUB123", "name": "Sub"}}
+
+    def handler(request):
+        assert request.url.path == "/api/users/0/collections/COLL123/collections"
+        return httpx.Response(200, json=[collection])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.get_subcollections("COLL123") == [collection["data"]]
+
+
+def test_get_collection_tags(monkeypatch, make_client):
+    def handler(request):
+        assert request.url.path == "/api/users/0/collections/COLL123/tags"
+        return httpx.Response(200, json=[{"tag": "history"}])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.get_collection_tags("COLL123") == ["history"]
+
+
+def test_get_item_tags(monkeypatch, make_client):
+    def handler(request):
+        assert request.url.path == "/api/users/0/items/ABCD1234/tags"
+        return httpx.Response(200, json=[{"tag": "history"}])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.get_item_tags("ABCD1234") == ["history"]
+
+
+def test_get_item_types(monkeypatch, make_client):
+    def handler(request):
+        assert request.url.path == "/api/itemTypes"
+        return httpx.Response(200, json=[{"itemType": "book"}])
+
+    monkeypatch.setattr(library, "client", make_client(handler))
+    assert library.get_item_types() == [{"itemType": "book"}]
+
+
 def test_get_attachment_file_path(monkeypatch, make_client):
     def handler(request):
         return httpx.Response(

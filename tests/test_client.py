@@ -38,3 +38,30 @@ def test_get_json_parses_body(make_client):
 
     client = make_client(handler)
     assert client.get_json("/ping") == {"hello": "world"}
+
+
+def test_get_defaults_to_user_library(make_client):
+    def handler(request):
+        assert request.url.path == "/api/users/0/items"
+        return httpx.Response(200, json=[])
+
+    client = make_client(handler)
+    client.get("/items")
+
+
+def test_get_resolves_group_library(make_client):
+    def handler(request):
+        assert request.url.path == "/api/groups/12345/items"
+        return httpx.Response(200, json=[])
+
+    client = make_client(handler)
+    client.get("/items", library="12345")
+
+
+def test_get_with_no_library_hits_api_root(make_client):
+    def handler(request):
+        assert request.url.path == "/api/itemTypes"
+        return httpx.Response(200, json=[])
+
+    client = make_client(handler)
+    client.get("/itemTypes", library=None)

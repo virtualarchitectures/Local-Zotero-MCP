@@ -24,7 +24,9 @@ def _open_document(path: str) -> pymupdf.Document:
 
 
 @mcp.tool()
-def read_document(item_key: str, start_page: int = 1, max_pages: int = 20) -> dict:
+def read_document(
+    item_key: str, start_page: int = 1, max_pages: int = 20, library: str = "user"
+) -> dict:
     """Read the text content of a PDF or EPUB attachment.
 
     Args:
@@ -33,8 +35,10 @@ def read_document(item_key: str, start_page: int = 1, max_pages: int = 20) -> di
         max_pages: Maximum number of pages to return in one call — page
             through a longer document by calling again with a higher
             start_page.
+        library: "user" for your personal library (default), or a group ID
+            to access a group library synced locally.
     """
-    doc = _open_document(resolve_attachment_path(item_key))
+    doc = _open_document(resolve_attachment_path(item_key, library=library))
     total_pages = doc.page_count
     if start_page < 1 or start_page > total_pages:
         doc.close()
@@ -58,6 +62,7 @@ def convert_document(
     item_key: str,
     output_path: str,
     output_format: Literal["pdf", "txt"] = "pdf",
+    library: str = "user",
 ) -> str:
     """Convert a PDF or EPUB attachment to another format and save it to disk.
 
@@ -67,8 +72,10 @@ def convert_document(
             is an existing directory (or ends with a path separator), the
             file is saved inside it using the attachment's own filename.
         output_format: "pdf" or "txt".
+        library: "user" for your personal library (default), or a group ID
+            to access a group library synced locally.
     """
-    source_path = resolve_attachment_path(item_key)
+    source_path = resolve_attachment_path(item_key, library=library)
     doc = _open_document(source_path)
 
     if output_path.endswith(os.sep) or os.path.isdir(output_path):

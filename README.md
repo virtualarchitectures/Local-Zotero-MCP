@@ -15,7 +15,7 @@ machine and no API keys are required.
 
 ## Quickstart
 
-No cloning or installing required — `uvx` fetches the published package
+No cloning or installing required - `uvx` fetches the published package
 from PyPI and runs it. Add this to your Claude Desktop config
 (`claude_desktop_config.json`):
 
@@ -36,18 +36,36 @@ fast; add `--refresh` to `args` if you want to force-pull the latest version.
 
 ## Tools
 
+Every library-scoped tool takes an optional `library` argument - `"user"`
+(default) for your personal library, or a group ID to read a group library
+synced locally. Use `list_groups` to find group IDs.
+
 | Tool | Description |
 |---|---|
+| `list_groups` | List group libraries available to the local Zotero install |
 | `search_items` | Search the library by title/creator/year or full text |
 | `get_item` | Get full data for an item, optionally with citation/bibliography |
 | `get_item_children` | List an item's notes and attachments |
+| `list_top_level_items` | List top-level items in the library |
+| `list_trashed_items` | List items in the trash |
+| `list_publications` | List items in "My Publications" |
 | `list_collections` | List collections |
+| `get_collection` | Get full data for a single collection |
+| `get_subcollections` | List the direct subcollections of a collection |
 | `get_collection_items` | List items in a collection |
+| `get_collection_tags` | List tags used on items in a collection |
 | `list_tags` | List tags |
+| `get_item_tags` | List tags attached to a single item |
 | `get_bibliography` | Generate a formatted bibliography for one or more items |
-| `list_saved_searches` | List saved searches |
-| `execute_saved_search` | Run a saved search and return matching items |
 | `get_attachment_file_path` | Get the local file path of an attachment |
+| `get_item_types` | List item types supported by Zotero |
+
+The two tools below have no equivalent in the Zotero Web API - they read the
+attachment file resolved by `get_attachment_file_path` and process it locally
+with [PyMuPDF](https://pymupdf.readthedocs.io/).
+
+| Tool | Description |
+|---|---|
 | `read_document` | Read the text content of a PDF or EPUB attachment |
 | `convert_document` | Convert a PDF or EPUB attachment to TXT or PDF and save it to a location you specify |
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import httpx
 
 BASE_URL = "http://127.0.0.1:23119/api"
-LIBRARY_PATH = "/users/0"
+USER_LIBRARY_PATH = "/users/0"
 
 NOT_RUNNING_MESSAGE = (
     "Could not reach Zotero. Make sure Zotero is running and that "
@@ -22,10 +22,28 @@ class ZoteroClient:
             base_url=BASE_URL, follow_redirects=False, timeout=10.0
         )
 
-    def get(self, path: str, params: dict | None = None) -> httpx.Response:
-        """GET a library-relative path (e.g. "/items") and return the raw response."""
+    def _resolve(self, path: str, library: str | None) -> str:
+        if library is None:
+            return path
+        prefix = USER_LIBRARY_PATH if library == "user" else f"/groups/{library}"
+        return f"{prefix}{path}"
+
+    def get(
+        self, path: str, params: dict | None = None, library: str | None = "user"
+    ) -> httpx.Response:
+        """GET a path and return the raw response.
+
+        Args:
+            path: A library-relative path (e.g. "/items"), or, when
+                `library` is None, a path relative to the API root (e.g.
+                "/itemTypes") for endpoints that aren't library-scoped.
+            library: "user" for the personal library (default), a group ID
+                for a group library, or None for non-library-scoped
+                endpoints.
+        """
+        url = self._resolve(path, library)
         try:
-            response = self._http.get(f"{LIBRARY_PATH}{path}", params=params)
+            response = self._http.get(url, params=params)
         except httpx.ConnectError as exc:
             raise ValueError(NOT_RUNNING_MESSAGE) from exc
 
@@ -35,8 +53,10 @@ class ZoteroClient:
             )
         return response
 
-    def get_json(self, path: str, params: dict | None = None):
-        return self.get(path, params).json()
+    def get_json(
+        self, path: str, params: dict | None = None, library: str | None = "user"
+    ):
+        return self.get(path, params, library).json()
 
 
 client = ZoteroClient()
