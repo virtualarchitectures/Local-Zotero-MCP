@@ -57,7 +57,7 @@ def read_document(item_key: str, start_page: int = 1, max_pages: int = 20) -> di
 def convert_document(
     item_key: str,
     output_path: str,
-    output_format: Literal["pdf", "txt", "html"] = "pdf",
+    output_format: Literal["pdf", "txt"] = "pdf",
 ) -> str:
     """Convert a PDF or EPUB attachment to another format and save it to disk.
 
@@ -66,7 +66,7 @@ def convert_document(
         output_path: Filesystem path to write the converted file to. If this
             is an existing directory (or ends with a path separator), the
             file is saved inside it using the attachment's own filename.
-        output_format: "pdf", "txt", or "html".
+        output_format: "pdf" or "txt".
     """
     source_path = resolve_attachment_path(item_key)
     doc = _open_document(source_path)
@@ -83,18 +83,10 @@ def convert_document(
         else:
             with open(output_path, "wb") as f:
                 f.write(doc.convert_to_pdf())
-    elif output_format == "txt":
+    else:
         text = "\n\n".join(page.get_text() for page in doc)
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(text)
-    else:
-        html = (
-            "<html><body>"
-            + "<hr/>".join(page.get_text("html") for page in doc)
-            + "</body></html>"
-        )
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(html)
 
     doc.close()
     return output_path
