@@ -62,7 +62,11 @@ synced locally. Use `list_groups` to find group IDs.
 
 The two tools below have no equivalent in the Zotero Web API - they read the
 attachment file resolved by `get_attachment_file_path` and process it locally
-with [PyMuPDF](https://pymupdf.readthedocs.io/).
+with [PyMuPDF](https://pymupdf.readthedocs.io/). Both accept
+`remove_headers_footers`: when true, lines that repeat near the top/bottom of
+most pages (running titles, page numbers, etc.) are detected and stripped
+from the returned/saved text. For `convert_document` this only applies to
+`output_format="txt"` - PDF output preserves the original pages as-is.
 
 | Tool | Description |
 |---|---|
