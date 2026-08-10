@@ -48,9 +48,8 @@ fast; add `--refresh` to `args` if you want to force-pull the latest version.
 | `list_saved_searches` | List saved searches |
 | `execute_saved_search` | Run a saved search and return matching items |
 | `get_attachment_file_path` | Get the local file path of an attachment |
-
-This server is read-only: it does not create, edit, or delete anything in
-your library.
+| `read_document` | Read the text content of a PDF or EPUB attachment |
+| `convert_document` | Convert a PDF or EPUB attachment to TXT or PDF and save it to a location you specify |
 
 ## Local development
 
