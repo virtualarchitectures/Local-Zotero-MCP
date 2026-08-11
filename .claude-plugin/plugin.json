@@ -1,7 +1,7 @@
 {
   "name": "local-zotero-mcp",
   "displayName": "Local Zotero MCP",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Search, browse, read, and cite items in a local Zotero library via the Zotero desktop app's Local API.",
   "author": {
     "name": "virtualarchitectures"
