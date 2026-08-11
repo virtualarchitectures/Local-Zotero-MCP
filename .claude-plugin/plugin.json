@@ -1,0 +1,13 @@
+{
+  "name": "local-zotero-mcp",
+  "displayName": "Local Zotero MCP",
+  "version": "0.2.1",
+  "description": "Search, browse, read, and cite items in a local Zotero library via the Zotero desktop app's Local API.",
+  "author": {
+    "name": "virtualarchitectures"
+  },
+  "homepage": "https://github.com/virtualarchitectures/Local-Zotero-MCP",
+  "repository": "https://github.com/virtualarchitectures/Local-Zotero-MCP",
+  "license": "MIT",
+  "keywords": ["zotero", "research", "citations", "bibliography", "pdf", "literature-review"]
+}

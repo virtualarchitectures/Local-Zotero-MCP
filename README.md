@@ -73,6 +73,30 @@ from the returned/saved text. For `convert_document` this only applies to
 | `read_document` | Read the text content of a PDF or EPUB attachment |
 | `convert_document` | Convert a PDF or EPUB attachment to TXT or PDF and save it to a location you specify |
 
+## Claude Plugin
+
+This repo also ships as a [Claude Code plugin](https://code.claude.com/docs/en/plugins) bundling
+four Agent Skills for Zotero-based research, on top of the same MCP tools listed above:
+
+| Skill | Covers |
+|---|---|
+| `searching-zotero-library` | Searching and browsing items, collections, tags, groups |
+| `reading-zotero-documents` | Full-text PDF/EPUB reading, quoting, and comparison |
+| `generating-zotero-bibliographies` | Formatted citations and reading lists |
+| `analyzing-zotero-research` | Thematic clustering, gap analysis, trajectory tracing, reading-list prioritization |
+
+The plugin's `.mcp.json` runs the server the same way as the Quickstart above (`uvx --from
+local-zotero-mcp zotero-mcp`), so it always tracks the published PyPI package.
+
+To try it locally, clone the repo and run:
+
+```bash
+claude --plugin-dir /path/to/Local-Zotero-MCP
+```
+
+Then invoke a skill directly, e.g. `/local-zotero-mcp:searching-zotero-library`, or just ask
+Claude a research question about your library and let it pick the right skill.
+
 ## Local development
 
 Clone the repo and install it locally:
