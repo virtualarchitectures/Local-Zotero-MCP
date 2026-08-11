@@ -33,6 +33,21 @@ If a `qmode="titleCreatorYear"` search comes up short or empty, retry with
 `qmode="everything"` before telling the user there are no results — it only searches
 metadata, not full text.
 
+### When `qmode="everything"` results look unreliable
+
+`qmode="everything"` is Zotero's own local quicksearch, not a strict filter — Zotero's own docs
+note it can behave more loosely than expected (e.g. surfacing items with no real match, or
+missing content that hasn't been indexed yet). If results look implausible — unrelated to the
+query, or roughly the same set you'd get with no query at all — **don't start reading or
+converting documents to verify by hand.** That burns tokens and writes files to disk for a check
+the search tool was supposed to handle, and it isn't your call to make silently. Instead:
+
+1. Try a narrower or differently-worded query, or add an `item_type`/`tag` filter.
+2. Tell the user plainly that Zotero's full-text search may not be reliable for this query.
+3. Only read or convert a document to verify a match if the user asks for it, or you've asked and
+   they've said yes — and even then, check one or two candidates, not the whole result set. See
+   `reading-zotero-documents` for that workflow.
+
 ## Drilling into a result
 
 - `get_item(item_key)` — full item data. Pass `include_bib=True` for a formatted citation.

@@ -44,6 +44,12 @@ is identifying themes across many papers, or is still in an early exploration ph
 text for 20+ papers back-to-back is usually the wrong call — narrow to the 3–5 most relevant
 first.
 
+**Never read or convert documents just to double-check a search result.** If `search_items`
+(especially `qmode="everything"`) looks unreliable, that's a search-tool limitation to flag to
+the user, not something to work around by converting a batch of PDFs to text and grepping them —
+that burns tokens and writes files to disk for no benefit the user asked for. Ask before reading
+or converting more than one or two documents purely for verification purposes.
+
 ## Deeper analysis patterns
 
 For evidence extraction, comparative deep dives across multiple papers, and methodology

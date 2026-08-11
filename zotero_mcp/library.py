@@ -41,7 +41,12 @@ def search_items(
 
     Args:
         query: Search text.
-        qmode: "titleCreatorYear" (default) or "everything" for a full-text search.
+        qmode: "titleCreatorYear" (default) or "everything" for full-text search.
+            "everything" uses Zotero's own local quicksearch, which can be looser
+            than expected — e.g. it may surface unrelated items for a query with
+            no real matches, or miss content that hasn't been indexed yet. Treat
+            surprising "everything" results with suspicion rather than as a
+            definitive answer.
         item_type: Optional item type filter (e.g. "book", "journalArticle").
         tag: Optional tag filter.
         limit: Maximum number of results (1-100).
