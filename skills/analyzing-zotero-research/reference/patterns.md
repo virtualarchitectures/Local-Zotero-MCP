@@ -51,7 +51,9 @@ Theme 3: Techno-managerial solutions (3 papers)
 Frame every finding as a property of the user's library, not of the field: "you have 15 papers on
 X, all from 2018 onward" rather than "the field is missing pre-2018 work." If the user wants to
 know what's missing from the field itself, say that requires an external literature index this
-MCP doesn't have access to.
+MCP doesn't have access to — don't quietly run a web search to answer it anyway. That's a
+separate action requiring the user's explicit go-ahead first (see the hard constraint in
+SKILL.md).
 
 ## Research trajectory analysis
 

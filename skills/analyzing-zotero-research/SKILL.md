@@ -8,9 +8,23 @@ description: Performs higher-level research analysis over a user's local Zotero 
 Requires the Zotero desktop app running locally with the Local API enabled (see the
 `searching-zotero-library` skill for the setting). This skill works entirely from what's already
 in the user's Zotero library — there is no external literature index (no Semantic Scholar or
-citation-graph integration) to cross-reference against, so never claim to find papers "missing
-from the field"; only ever "missing from your library" or "thin in your library," and say
-plainly when you can't tell the difference.
+citation-graph integration) to cross-reference against.
+
+**Hard constraint: don't reach outside the `zotero` MCP server to compensate.** Do not call
+`WebSearch`, `WebFetch`, or any other tool to look up papers, verify existence/citation details,
+or check "what's out there" on the open web, and don't answer from general/trained knowledge of
+the literature presented as verified fact. Doing that is exactly the Semantic Scholar-style
+cross-referencing this MCP doesn't have, just done through a side door instead of the front door.
+If a Zotero search or citation-count lookup looks unreliable, say so — don't quietly substitute a
+web search to compensate (same rule `searching-zotero-library` applies to `qmode="everything"`).
+
+Never claim to find papers "missing from the field" — only ever "missing from your library" or
+"thin in your library." If the user explicitly asks what's missing from the field at large, not
+just their library, tell them plainly that this skill only sees their Zotero library and has no
+external index to check against. If they then want an actual open-web check, that's a distinct,
+explicit request outside this skill's scope — confirm with them before doing it, since it's a
+materially different kind of answer (unverified web results vs. their own library data), not a
+silent fallback for this skill to reach for on its own.
 
 Start every analysis with a `search_items` or `get_collection_items` call to gather the working
 set (see `searching-zotero-library`), then apply one of the patterns in

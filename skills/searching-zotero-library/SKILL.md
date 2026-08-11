@@ -39,8 +39,9 @@ metadata, not full text.
 note it can behave more loosely than expected (e.g. surfacing items with no real match, or
 missing content that hasn't been indexed yet). If results look implausible — unrelated to the
 query, or roughly the same set you'd get with no query at all — **don't start reading or
-converting documents to verify by hand.** That burns tokens and writes files to disk for a check
-the search tool was supposed to handle, and it isn't your call to make silently. Instead:
+converting documents to verify by hand, and don't reach for `WebSearch`/`WebFetch` either.** Both
+burn resources (tokens, disk, or an unrequested trip to the open web) on a check the search tool
+was supposed to handle, and it isn't your call to make silently. Instead:
 
 1. Try a narrower or differently-worded query, or add an `item_type`/`tag` filter.
 2. Tell the user plainly that Zotero's full-text search may not be reliable for this query.
