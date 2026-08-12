@@ -97,6 +97,9 @@ claude --plugin-dir /path/to/Local-Zotero-MCP
 Then invoke a skill directly, e.g. `/local-zotero-mcp:searching-zotero-library`, or just ask
 Claude a research question about your library and let it pick the right skill.
 
+See [TESTING.md](TESTING.md) for a manual test checklist to run against a real Zotero library
+after changing a skill.
+
 ## Local development
 
 Clone the repo and install it locally:
