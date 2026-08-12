@@ -1,0 +1,14 @@
+{
+  "name": "local-zotero-mcp",
+  "owner": {
+    "name": "virtualarchitectures"
+  },
+  "description": "Zotero research skills and MCP tools for a local Zotero library.",
+  "plugins": [
+    {
+      "name": "local-zotero-mcp",
+      "source": ".",
+      "description": "Search, browse, read, and cite items in a local Zotero library via Zotero's Local API."
+    }
+  ]
+}
