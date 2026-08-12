@@ -88,7 +88,18 @@ four Agent Skills for Zotero-based research, on top of the same MCP tools listed
 The plugin's `.mcp.json` runs the server the same way as the Quickstart above (`uvx --from
 local-zotero-mcp zotero-mcp`), so it always tracks the published PyPI package.
 
-To try it locally, clone the repo and run:
+### Install
+
+Add this repo as a plugin marketplace, then install the plugin:
+
+```
+/plugin marketplace add virtualarchitectures/Local-Zotero-MCP
+/plugin install local-zotero-mcp@local-zotero-mcp
+```
+
+### Local development
+
+To try it locally instead, clone the repo and run:
 
 ```bash
 claude --plugin-dir /path/to/Local-Zotero-MCP
@@ -139,3 +150,10 @@ required. To smoke-test against your own Zotero library:
 ```bash
 uv run mcp dev zotero_mcp/server.py
 ```
+
+## Acknowledgements
+
+The skills in this repository have been adapted from
+[urschrei/zotero_search_skill](https://github.com/urschrei/zotero_search_skill). This version
+has been adapted to remove the dependencies on Pyzotero and the Semantic Scholar integration,
+interfacing directly with a local Zotero instance via MCP instead.
